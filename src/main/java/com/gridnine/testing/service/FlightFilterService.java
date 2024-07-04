@@ -33,4 +33,8 @@ public class FlightFilterService {
         }
         return filteredFlights;
     }
+
+    public List<FlightFilter> getFilters() {
+        return filters;
+    }
 }

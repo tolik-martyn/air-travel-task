@@ -46,12 +46,12 @@ public class Main {
         flightFilter.addFilter(new ArrivalBeforeDepartureFilter());
         flightFilter.addFilter(new GroundTimeExceedsTwoHoursFilter());
         List<Flight> filteredFlights = flightFilter.filter(flights);
-        System.out.println("Одновременное использование нескольких фильтров:");
+        System.out.println("Список вылетов при одновременном использовании нескольких фильтров:");
         System.out.println(filteredFlights);
 
         System.out.println("================================");
 
-        // Пример создания фильтров через анонимный класс на основе DepartureBeforeNowFilter и ArrivalBeforeDepartureFilter
+        // Пример создания фильтров через анонимные классы на основе DepartureBeforeNowFilter и ArrivalBeforeDepartureFilter
         flightFilter3.addFilter(new FlightFilter() {
             @Override
             public List<Flight> filter(List<Flight> flights) {
@@ -63,18 +63,12 @@ public class Main {
             }
         });
 
-        flightFilter3.addFilter(new FlightFilter() {
-            @Override
-            public List<Flight> filter(List<Flight> flights) {
-                return flights.stream()
-                        .filter(flight -> flight.getSegments().stream()
-                                .allMatch(segment -> segment.getArrivalDate().isAfter(segment.getDepartureDate())))
-                        .collect(Collectors.toList());
-
-            }
-        });
+        flightFilter3.addFilter(flightList -> flightList.stream()
+                .filter(flight -> flight.getSegments().stream()
+                        .allMatch(segment -> segment.getArrivalDate().isAfter(segment.getDepartureDate())))
+                .collect(Collectors.toList()));
         List<Flight> filteredFlights4 = flightFilter3.filter(filteredFlights3);
-        System.out.println("Фильтры с использованием анонимных классов:");
+        System.out.println("Список вылетов с использованием анонимных классов:");
         System.out.println(filteredFlights4);
     }
 }
